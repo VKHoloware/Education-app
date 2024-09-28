@@ -51,8 +51,8 @@ db, err := GetDBConnection()
     defer db.Close()
 
 
-	query := "UPDATE user SET Class = ?, UpdatedBy = ?, UpdateTime = NOW() WHERE ID = ?"
-	_, err = db.Exec(query, data.Level, "some_updated_by_value", data.ID)
+	query := "UPDATE user SET EnglishProficency= ?, UpdatedBy = NOW(), UpdateTime = NOW() WHERE ID = ?"
+	_, err = db.Exec(query, data.Level, data.ID)
 	if err != nil {
 		log.Printf("Failed to update data: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update data"})

@@ -16,6 +16,8 @@ type EntryLevelQuestion struct {
     Options  []string `json:"options,omitempty"`
     Type     string   `json:"type"`
     Answer   string   `json:"answer,omitempty"`
+      Answers            []string `json:"answers"`
+    CorrectAnswerIndex int      `json:"correctAnswerIndex"`
 }
 
 type EntryLevelData struct {

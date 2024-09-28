@@ -1,11 +1,13 @@
 package main
 
 import (
-    "log"
-    "models" // Ensure this import path matches your actual project structure
+	"log"
+	"models" // Ensure this import path matches your actual project structure
 
-    "github.com/gin-contrib/cors"
-    "github.com/gin-gonic/gin"
+	"routes"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	// "google.golang.org/genproto/googleapis/maps/routes/v1"
 )
 
 func main() {
@@ -28,6 +30,8 @@ func main() {
         c.Next()
     })
     models.GetDBConnection()
+    // routes.Savewords();
+
 
     // Register the route and handler
     r.POST("/userRegister", models.UserRegister)
@@ -35,18 +39,40 @@ func main() {
     r.POST("/organisationregister",models.OrganisationRegister)
     r.GET("/organisationname",models.OrganisationName)
     r.GET("/teacherdata",models.TeachersDatas)
-    r.GET("/studentdata",models.StudentDatas)
+    r.GET("/studentdata",routes.StudentDatas)
     r.POST("/savequestionanswer",models.SaveToDatabase)
     r.POST("/deleteuser",models.DeleteUser)
     r.POST("/savelesson",models.SaveLessonData)
     r.POST("/savelevel",models.SaveStudentLevel)
+    r.GET("/fetchVocabularyTestQuestions", models.FetchVocabularyTestQuestion)
+    // r.POST("/savevocabulary",models.SaveVocabularyQuestion)
+    r.POST("/saveTestScore", models.SaveTestScore)
+
+ 
+
+
+
+
 
     r.GET("/learnsavequestion",models.GetQA)
     r.GET("/organisationDetails",models.OrganisationDetails)
     r.GET("/data", models.DataHandler)
-    r.GET("/vocabulary", models.Testdata)
+    r.GET("/vocabulary", models.DefaultVocabularyLevel)
+    r.GET("/fetchvocabulary",models.FetchVocabularyQuestion)
 
-    // r.GET("/data", models.DataHandler)
+
+
+
+    r.POST("/savewords",routes.SaveWords)
+    r.GET("/getwords",routes.FetchWords)
+    r.POST("/savevocabulary",routes.SaveVocabularyQuestion)
+    r.POST("/savevocabularytestdata",routes.SaveVocabularyTestQuestion)
+    r.POST("/getword",routes.Getwordfromapi)
+
+
+
+    
+    // r.GET("/data", models.DataHandler)   SaveVocabularyQuestion
 
     models.CheckGemini()
 

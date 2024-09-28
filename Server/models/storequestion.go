@@ -110,7 +110,7 @@ import (
 				}
 			
 				// Insert data into the table with a JSON column
-				query := `INSERT INTO testdata (Class, datas, Teacher) VALUES (?, ?, ?)`
+				query := `INSERT INTO testdata (Class, lesson, Teacher) VALUES (?, ?, ?)`
 				_, err = db.Exec(query, payload.StudentID, jsonData, payload.TeacherID)
 				if err != nil {
 					c.JSON(http.StatusInternalServerError, gin.H{"error": "Error executing query"})
@@ -154,7 +154,7 @@ func GetQA(c *gin.Context) {
     }
     defer db.Close()
 
-    query := `SELECT datas FROM testdata WHERE Class=?`
+    query := `SELECT lesson FROM testdata WHERE Class=?`
 
     // Execute the query
     var jsonData sql.NullString
@@ -174,6 +174,63 @@ func GetQA(c *gin.Context) {
         c.JSON(http.StatusNotFound, gin.H{"error": "No data found"})
     }
 }
+func SaveLessonData(c *gin.Context) {
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+	c.Header("Access-Control-Allow-Headers", "Content-Type")
+
+	if c.Request.Method == http.MethodOptions {
+		c.JSON(http.StatusOK, nil)
+		return
+	}
+	if c.Request.Method != http.MethodPost {
+		c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "Method Not Allowed"})
+		return
+	}
+
+	db, err := GetDBConnection()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Did Not Connect to the DataBase"})
+		return
+	}
+	defer db.Close()
+
+	var savelesson SaveLesson
+	if err := c.ShouldBindJSON(&savelesson); err != nil {
+		fmt.Print(err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Bad Request"})
+		return
+	}
+
+	// Serialize the QuestionAnswer field
+	questionAnswerJSON, err := json.Marshal(savelesson.QuestionAnswer)
+	if err != nil {
+		fmt.Print(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to serialize QuestionAnswer"})
+		return
+	}
+
+	// Debugging prints
+	fmt.Printf("LessonName: %s\n", savelesson.LessonName)
+	fmt.Printf("TeacherID: %d\n", savelesson.TeacherID)
+
+	query := `
+		INSERT INTO lesson 
+		(Class, TeacherID, Lesson, QuestionAnswer, TestDate,TestDuration,ResultDate,CreatedBy, CreatedTime, UpdatedTime, UpdatedBy) 
+		VALUES (?, ?, ?, ?, ?, ?, ?,?,NOW(), NOW(), ?)
+	`
+
+	_, err = db.Exec(query, savelesson.ClassLevel, savelesson.TeacherID, savelesson.LessonName, questionAnswerJSON, savelesson.TestTime, savelesson.TestDuration,savelesson.Resultdate,savelesson.CreatedBy, savelesson.CreatedBy)
+
+	if err != nil {
+		fmt.Printf("Error executing query: %v\n", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to execute the query"})
+		return
+	}
+
+	c.JSON(http.StatusOK, "Lesson Stored Successfully")
+}
+
 
 	// func SaveLessonData(c *gin.Context){
 
@@ -228,63 +285,7 @@ func GetQA(c *gin.Context) {
 
 
 	// }
-	func SaveLessonData(c *gin.Context) {
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
-		c.Header("Access-Control-Allow-Headers", "Content-Type")
-	
-		if c.Request.Method == http.MethodOptions {
-			c.JSON(http.StatusOK, nil)
-			return
-		}
-		if c.Request.Method != http.MethodPost {
-			c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "Method Not Allowed"})
-			return
-		}
-	
-		db, err := GetDBConnection()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Did Not Connect to the DataBase"})
-			return
-		}
-		defer db.Close()
-	
-		var savelesson SaveLesson
-		if err := c.ShouldBindJSON(&savelesson); err != nil {
-			fmt.Print(err)
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Bad Request"})
-			return
-		}
-	
-		// Serialize the QuestionAnswer field
-		questionAnswerJSON, err := json.Marshal(savelesson.QuestionAnswer)
-		if err != nil {
-			fmt.Print(err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to serialize QuestionAnswer"})
-			return
-		}
-	
-		// Debugging prints
-		fmt.Printf("LessonName: %s\n", savelesson.LessonName)
-		fmt.Printf("TeacherID: %d\n", savelesson.TeacherID)
-	
-		query := `
-			INSERT INTO lesson 
-			(Class, TeacherID, Lesson, QuestionAnswer, TestDate,TestDuration,ResultDate,CreatedBy, CreatedTime, UpdatedTime, UpdatedBy) 
-			VALUES (?, ?, ?, ?, ?, ?, ?,?,NOW(), NOW(), ?)
-		`
-	
-		_, err = db.Exec(query, savelesson.ClassLevel, savelesson.TeacherID, savelesson.LessonName, questionAnswerJSON, savelesson.TestTime, savelesson.TestDuration,savelesson.Resultdate,savelesson.CreatedBy, savelesson.CreatedBy)
-	
-		if err != nil {
-			fmt.Printf("Error executing query: %v\n", err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to execute the query"})
-			return
-		}
-	
-		c.JSON(http.StatusOK, "Lesson Stored Successfully")
-	}
-	
+
 
 // if err:= c.ShouldBindJSON(&scoreData); err !=nil {
 // 	c.JSON(http.StatusBadRequest,gin.H{"error":"Invalid Request Data,Check the Data"})

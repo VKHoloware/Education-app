@@ -97,7 +97,7 @@
 package models
 
 import (
-	"database/sql"
+	// "database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -113,7 +113,7 @@ type Teacher struct {
 	Email          string  `json:"email"`
 	RegisterNumber string  `json:"registernumber"`
 	CreatedTime      string  `json:"createdtime"`
-	Class          *string `json:"class"`  // Use a pointer to handle NULL values
+	// Class          *string `json:"class"`  // Use a pointer to handle NULL values
 }
 func 	TeachersDatas(c *gin.Context) {
 	fmt.Println("Starting TeachersData")
@@ -150,7 +150,7 @@ func 	TeachersDatas(c *gin.Context) {
 	defer db.Close()
 
 	// Query to select teacher data filtered by CreatedBy (email) and Role
-	query := `SELECT ID,Name, EmailId, RegisterNumber, CreatedTime, Class FROM user WHERE Role='Teacher' AND CreatedBy = ? AND IsDeleted=0`
+	query := `SELECT ID,Name, EmailId, RegisterNumber, CreatedTime FROM user WHERE Role='Teacher' AND CreatedBy = ? AND IsDeleted=0`
 
 	data, err := db.Query(query, createdBy)
 	if err != nil {
@@ -165,10 +165,10 @@ func 	TeachersDatas(c *gin.Context) {
 	// Iterate over data and scan the results into a slice of Teacher structs
 	for data.Next() {
 		var teacher Teacher
-		var class sql.NullString // Use sql.NullString to handle possible NULL values
+		// var class sql.NullString // Use sql.NullString to handle possible NULL values
 
 		// Scan data and handle NULL values for Class
-		err := data.Scan(&teacher.ID,&teacher.Name, &teacher.Email, &teacher.RegisterNumber, &teacher.CreatedTime, &class)
+		err := data.Scan(&teacher.ID,&teacher.Name, &teacher.Email, &teacher.RegisterNumber, &teacher.CreatedTime)		// &class
 		if err != nil {
 			log.Printf("Failed to scan row: %v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse data"})
@@ -176,11 +176,11 @@ func 	TeachersDatas(c *gin.Context) {
 		}
 
 		// Assign Class value: If valid, set the pointer; otherwise, leave it nil
-		if class.Valid {
-			teacher.Class = &class.String
-		} else {
-			teacher.Class = nil
-		}
+		// if class.Valid {
+		// 	teacher.Class = &class.String
+		// } else {
+		// 	teacher.Class = nil
+		// }
 
 		teachers = append(teachers, teacher)
 		fmt.Print(teachers)
