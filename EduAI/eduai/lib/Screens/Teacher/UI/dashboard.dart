@@ -123,21 +123,21 @@ Future<void> _retrieveLoginData() async {
               //       style: TextStyle(fontSize: 18),
               //     ),
               //     SizedBox(width: 16),
-              //     DropdownButton<String>(
-              //       value: _selectedValue,
-              //       hint: Text('Select an option'),
-              //       onChanged: (String? newValue) {
-              //         setState(() {
-              //           _selectedValue = newValue;
-              //         });
-              //       },
-              //       items: _roles.map<DropdownMenuItem<String>>((String role) {
-              //         return DropdownMenuItem<String>(
-              //           value: role,
-              //           child: Text(role),
-              //         );
-              //       }).toList(),
-              //     ),
+                  // DropdownButton<String>(
+                  //   value: _selectedValue,
+                  //   hint: Text('Select an option'),
+                  //   onChanged: (String? newValue) {
+                  //     setState(() {
+                  //       _selectedValue = newValue;
+                  //     });
+                  //   },
+                  //   items: _roles.map<DropdownMenuItem<String>>((String role) {
+                  //     return DropdownMenuItem<String>(
+                  //       value: role,
+                  //       child: Text(role),
+                  //     );
+                  //   }).toList(),
+                  // ),
               //   ],
               // ),
               // SizedBox(height: 20),
@@ -276,7 +276,7 @@ Future<void> _retrieveLoginData() async {
           'registernumber': registerNumber,
           'OrganizationID': organisationId,
           'role': "Student",
-          'class': classlevel,
+          'EnglishProficency': 'UnKnown',
           'createdby': adminid,
         }),
       );

@@ -282,15 +282,18 @@
 //     );
 //   }
 // }
+import 'package:eduai/Comman/UI/Customcard.dart';
+import 'package:eduai/Screens/LoginRegister/UI/login.dart';
 import 'package:eduai/Screens/Read/UI/readmainpage.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Auditinfo extends StatefulWidget {
+class Mainpage extends StatefulWidget {
   @override
-  _AuditinfoState createState() => _AuditinfoState();
+  _MainpageState createState() => _MainpageState();
 }
 
-class _AuditinfoState extends State<Auditinfo> {
+class _MainpageState extends State<Mainpage> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -301,8 +304,45 @@ class _AuditinfoState extends State<Auditinfo> {
     final gapHeight = (screenWidth - 2 * cardWidth) / 12; 
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Custom Card Layout'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(70.0),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: AppBar(
+            title: Row(
+              children: [
+                Text("Main Page"),
+                Spacer(),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    // Text('Data 1'),
+                    // Text('Data 2'),
+                  ],
+                ),
+               
+                   IconButton(
+      onPressed: () async {
+        // Clear SharedPreferences data
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+
+        Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => Login()),
+                    (route) => false, 
+                  );
+      },
+      icon: Tooltip(
+        message: "Logout", // Hover text
+        child: Icon(Icons.account_circle_outlined),
+      ),
+    )
+              ],
+            ),
+          ),
+        ),
       ),
       body: Container(
         // Set the gradient background
@@ -438,54 +478,7 @@ class _AuditinfoState extends State<Auditinfo> {
   }
 }
 
-class CustomCard extends StatelessWidget {
-  final double height;
-  final double width;
-  final String label; 
-  final List<String> data;
-  final double elevationvalue = 25;
 
-  CustomCard({
-    required this.height,
-    required this.width,
-    required this.label,
-    required this.data,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: elevationvalue,
-      child: Container(
-        height: height,
-        width: width,
-        padding: const EdgeInsets.all(18.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            SizedBox(height: 8),
-            Expanded(
-              child: ListView.builder(
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  return Text(
-                    data[index],
-                    style: TextStyle(fontSize: 14),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class ReadLevelPage extends StatelessWidget {
   @override

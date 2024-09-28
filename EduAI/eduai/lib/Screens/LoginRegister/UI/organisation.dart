@@ -239,32 +239,7 @@ style: TextStyle(fontSize: 25),
                           ),
                           
                         ),
-                        // TextField(
-                        //   controller:_placeController,
-                        //   decoration: const InputDecoration(
-                        //     labelText: 'Place ',
-                        //     border: OutlineInputBorder(
-                        //       borderSide: BorderSide(
-                        //         color: Colors.blue, // Default border color
-                        //         width: 2.0,
-                        //       ),
-                        //     ),
-                        //     enabledBorder: OutlineInputBorder(
-                        //       borderSide: BorderSide(
-                        //         // color: Colors.green, // Border color when not focused
-                        //         width: 1.0,
-                        //       ),
-                        //     ),
-                        //     focusedBorder: OutlineInputBorder(
-                        //       borderSide: BorderSide(
-                        //         color:  Colors.blue, // Border color when focused
-                        //         width: 2.0,
-                        //       ),
-                        //     ),
-                            
-                        //   ),
-                          
-                        // ),
+
 
                         SizedBox(height: 20),
                         TextField(
@@ -397,3 +372,29 @@ style: TextStyle(fontSize: 25),
 }
 
 
+                        // TextField(
+                        //   controller:_placeController,
+                        //   decoration: const InputDecoration(
+                        //     labelText: 'Place ',
+                        //     border: OutlineInputBorder(
+                        //       borderSide: BorderSide(
+                        //         color: Colors.blue, // Default border color
+                        //         width: 2.0,
+                        //       ),
+                        //     ),
+                        //     enabledBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(
+                        //         // color: Colors.green, // Border color when not focused
+                        //         width: 1.0,
+                        //       ),
+                        //     ),
+                        //     focusedBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(
+                        //         color:  Colors.blue, // Border color when focused
+                        //         width: 2.0,
+                        //       ),
+                        //     ),
+                            
+                        //   ),
+                          
+                        // ),

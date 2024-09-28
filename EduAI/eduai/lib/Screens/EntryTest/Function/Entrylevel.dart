@@ -13,6 +13,7 @@ class EntrylevelData{
 
   String calculateRank(int score, int totalQuestions) {
   double percentage = (score / totalQuestions) * 100;
+  print(percentage);
 
   if (percentage >= 90) {
     return 'Expert';
@@ -31,8 +32,9 @@ class EntrylevelData{
 Future<void> saveResultsToDatabase(String rank, int score) async {
   
   final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('englishProficency');
   final int? id = prefs.getInt('id');
-        await prefs.setString('level', rank);
+        await prefs.setString('englishProficency', rank);
 
   print(id);
   final url = 'http://localhost:8000/savelevel'; // Change this to your API URL

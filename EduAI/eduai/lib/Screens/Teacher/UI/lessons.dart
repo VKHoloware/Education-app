@@ -500,7 +500,7 @@ Widget build(BuildContext context) {
 
   // List of pages to navigate to
   List<Widget> pages = [
-    Vocabulary(), 
+    VocabularyScreen(), 
     // WordsUsagePage(), 
     // ReadPassagePage(), 
     // GrammarTestPage(), 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../Comman/UI/Customcard.dart';
+import 'vocabularymain.dart';
 
 class Readmainpage extends StatefulWidget {
   @override
@@ -33,7 +34,7 @@ class _ReadmainpageState extends State<Readmainpage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Readmainpage(),
+                          builder: (context) => VocabularyMainpage(),
                         ),
                       );
                     },
